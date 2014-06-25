@@ -239,7 +239,7 @@ typedef enum {
                 [self popToRootViewControllerAnimated:FRLayeredAnimationDirectionRight];
             }
 
-            [UIView animateWithDuration:0.2 animations:^{
+            [UIView animateWithDuration:0.1 animations:^{
                 [self moveToSnappingPointsWithGestureRecognizer:gestureRecognizer];
             }
                              completion:^(__unused BOOL finished) {
@@ -679,7 +679,7 @@ typedef enum {
     };
 
     if (animated) {
-        [UIView animateWithDuration:0.5
+        [UIView animateWithDuration:0.3
                               delay:0
                             options:UIViewAnimationOptionCurveLinear
                          animations:^{
@@ -727,6 +727,25 @@ typedef enum {
 - (void)popToRootViewControllerAnimated:(BOOL)animated direction:(FRLayeredAnimationDirection)direction
 {
     [self popToViewController:[self.layeredViewControllers objectAtIndex:0] animated:animated direction:direction];
+}
+
+- (void)pushViewController:(UIViewController *)contentViewController
+                   onTopOf:(UIViewController *)anchorViewController
+              maximumWidth:(BOOL)maxWidth
+                  animated:(BOOL)animated
+             configuration:(void (^)(FRLayeredNavigationItem *item))configuration {
+    
+    UIViewController* topViewController = anchorViewController;
+    if (anchorViewController.navigationController != nil) {
+        topViewController = anchorViewController.navigationController;
+    }
+    if (anchorViewController.tabBarController != nil) {
+        topViewController = anchorViewController.tabBarController;
+    }
+    
+    [self popToViewController:topViewController animated:animated];
+    
+    [self pushViewController:contentViewController inFrontOf:topViewController maximumWidth:maxWidth animated:animated configuration:configuration];
 }
 
 - (void)pushViewController:(UIViewController *)contentViewController
@@ -835,7 +854,7 @@ typedef enum {
     };
 
     if (animated) {
-        [UIView animateWithDuration:0.5
+        [UIView animateWithDuration:0.3
                               delay:0
                             options:UIViewAnimationOptionCurveEaseOut
                          animations:^{
@@ -923,7 +942,7 @@ typedef enum {
     };
 
     if (animated) {
-        [UIView animateWithDuration:0.5 animations:compact];
+        [UIView animateWithDuration:0.3 animations:compact];
     }
     else {
         compact();

@@ -176,9 +176,10 @@
 - (void)viewWillLayoutSubviews
 {
     if (self.layeredNavigationItem.displayShadow) {
-        self.view.layer.shadowRadius = 10.0;
-        self.view.layer.shadowOffset = CGSizeMake(-2.0, -3.0);
-        self.view.layer.shadowOpacity = 0.5;
+        // kimle - making shadow less dramatic
+        self.view.layer.shadowRadius = 3.0; //10.0;
+        self.view.layer.shadowOffset = CGSizeMake(-1.0, -2.0); // CGSizeMake(-2.0, -3.0);
+        self.view.layer.shadowOpacity = 0.25; // 0.5;
         self.view.layer.shadowColor = [UIColor blackColor].CGColor;
         self.view.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.view.bounds].CGPath;
     }

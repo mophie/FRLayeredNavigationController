@@ -183,6 +183,26 @@ typedef enum {
  * All view controllers already on top of anchorViewController get popped automatically first.
  *
  * @param viewController The UIViewController to push on the navigation stack.
+ * @param anchorViewController The UIViewController on top of which the new view controller should get pushed. All
+ other view controllers are popped.
+ * @param maxWidth `YES` if viewController is a content view controller and should therefore use all the remaining
+ *                 screen width.
+ * @param animated Set this value to YES to animate the transition. Pass NO if you are setting up a layered navigation
+ *                 controller before its view is displayed.
+ * @param configuration A block object you can use to control some parameters (such as the width) for the new view
+ *                      controller. The block's only parameter is a newly created instance of FRLayeredNavigationItem .
+ */
+- (void)pushViewController:(UIViewController *)viewController
+                   onTopOf:(UIViewController *)anchorViewController
+              maximumWidth:(BOOL)maxWidth
+                  animated:(BOOL)animated
+             configuration:(void (^)(FRLayeredNavigationItem *item))configuration;
+
+/**
+ * Pushes a view controller onto the stack on top of anchorViewController and updates the display.
+ * All view controllers already on top of anchorViewController get popped automatically first.
+ *
+ * @param viewController The UIViewController to push on the navigation stack.
  * @param anchorViewController The UIViewController on top of which the new view controller should get pushed.
  * @param maxWidth `YES` if viewController is a content view controller and should therefore use all the remaining
  *                 screen width.
