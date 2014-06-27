@@ -49,7 +49,9 @@ typedef enum {
 } SnappingPointsMethod;
 
 @interface FRLayeredNavigationController ()
-
+{
+    BOOL _displayTopViewInFullScreen;
+}
 @property (nonatomic, readwrite, strong) UIPanGestureRecognizer *panGR;
 @property (nonatomic, readwrite, strong) NSMutableArray *layeredViewControllers;
 @property (nonatomic, readwrite, weak) UIViewController *outOfBoundsViewController;
@@ -136,7 +138,9 @@ typedef enum {
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
-    [self doLayout];
+    if (_displayTopViewInFullScreen == NO) {
+        [self doLayout];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -413,7 +417,7 @@ typedef enum {
             break;
         }
         FRLayeredNavigationItem *meNavItem = me.layeredNavigationItem;
-
+        
         const CGPoint myPos = meNavItem.currentViewPosition;
         const CGPoint myInitPos = meNavItem.initialViewPosition;
         const CGFloat myWidth = ((meNavItem.snappingDistance >= 0) ?
@@ -940,12 +944,65 @@ typedef enum {
             parentItem = navigationItem;
         }
     };
+    
+    if (animated) {
+        [UIView animateWithDuration:0.3 animations:compact];
+    }
+    else {
+        compact();
+    }
+}
+
+- (void)showFullScreenTopViewControllers:(BOOL)animated
+{
+    FRLayerController* layerController = [self.layeredViewControllers lastObject];
+    FRLayeredNavigationItem* navigationItem = layerController.layeredNavigationItem;
+
+    _displayTopViewInFullScreen = YES;
+    self.userInteractionEnabled = NO;
+
+    void (^compact)(void) = ^{
+        CGRect f = [self getScreenBoundsForCurrentOrientation];
+        FRLayerController *vc = [self.layeredViewControllers lastObject];
+        navigationItem.currentViewPosition = f.origin;
+        vc.view.frame = f;
+    };
 
     if (animated) {
         [UIView animateWithDuration:0.3 animations:compact];
     }
     else {
         compact();
+    }
+    
+}
+
+- (void)hideFullScreenTopViewControllers:(BOOL)animated
+{
+    FRLayerController* layerController = [self.layeredViewControllers lastObject];
+    FRLayeredNavigationItem* navigationItem = layerController.layeredNavigationItem;
+    
+    void (^compact)(void) = ^{
+        CGRect f = layerController.view.frame;
+        f.origin.x = navigationItem.initialViewPosition.x;
+        navigationItem.currentViewPosition = f.origin;
+        layerController.view.frame = f;
+    };
+    
+    void (^finish)(void) = ^{
+        _displayTopViewInFullScreen = NO;
+        self.userInteractionEnabled = YES;
+        [self doLayout];
+    };
+    
+    if (animated) {
+        [UIView animateWithDuration:0.3 animations:compact completion:^(BOOL finished) {
+            finish();
+        }];
+    }
+    else {
+        compact();
+        finish();
     }
 }
 

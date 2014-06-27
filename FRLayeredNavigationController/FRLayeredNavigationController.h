@@ -263,6 +263,20 @@ typedef enum {
 - (void)compressViewControllers:(BOOL)animated;
 
 /**
+ * Make the top layer full screen.
+ *
+ * @param animated Set this value to `YES` to animate any layer movement that occurs as a result of the compacting.
+ */
+- (void)showFullScreenTopViewControllers:(BOOL)animated;
+
+/**
+ * Make the top layer regular sized.
+ *
+ * @param animated Set this value to `YES` to animate any layer movement that occurs as a result of the compacting.
+ */
+- (void)hideFullScreenTopViewControllers:(BOOL)animated;
+
+/**
  * If user interaction on the layered navigation controller is enabled.
  */
 @property (nonatomic) BOOL userInteractionEnabled;
