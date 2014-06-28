@@ -953,7 +953,7 @@ typedef enum {
     }
 }
 
-- (void)showFullScreenTopViewControllers:(BOOL)animated
+- (void)showFullScreenTopViewController:(BOOL)animated
 {
     FRLayerController* layerController = [self.layeredViewControllers lastObject];
     FRLayeredNavigationItem* navigationItem = layerController.layeredNavigationItem;
@@ -977,7 +977,7 @@ typedef enum {
     
 }
 
-- (void)hideFullScreenTopViewControllers:(BOOL)animated
+- (void)hideFullScreenTopViewController:(BOOL)animated
 {
     FRLayerController* layerController = [self.layeredViewControllers lastObject];
     FRLayeredNavigationItem* navigationItem = layerController.layeredNavigationItem;
@@ -1003,6 +1003,16 @@ typedef enum {
     else {
         compact();
         finish();
+    }
+}
+
+- (void)toggleFullScreenTopViewController:(BOOL)animated
+{
+    FRLayerController* layerController = [self.layeredViewControllers lastObject];
+    if (_displayTopViewInFullScreen == YES) {
+        [self hideFullScreenTopViewController:NO];
+    } else {
+        [self showFullScreenTopViewController:NO];
     }
 }
 
