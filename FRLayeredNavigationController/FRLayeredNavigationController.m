@@ -138,9 +138,7 @@ typedef enum {
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
-    if (_displayTopViewInFullScreen == NO) {
-        [self doLayout];
-    }
+    [self doLayout];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -525,6 +523,13 @@ typedef enum {
 
 - (void)doLayout
 {
+    if (_displayTopViewInFullScreen == YES) {
+        // Relayout in full screen
+        FRLayerController* layerController = [self.layeredViewControllers lastObject];
+        layerController.view.frame = [self getScreenBoundsForCurrentOrientation];
+        return;
+    }
+    
     for (FRLayerController *vc in self.layeredViewControllers) {
         CGRect f = vc.view.frame;
         if (vc.layeredNavigationItem.currentViewPosition.x < vc.layeredNavigationItem.initialViewPosition.x) {
@@ -747,7 +752,7 @@ typedef enum {
         topViewController = anchorViewController.tabBarController;
     }
     
-    [self popToViewController:topViewController animated:animated];
+    [self popToViewController:topViewController animated:NO];
     
     [self pushViewController:contentViewController inFrontOf:topViewController maximumWidth:maxWidth animated:animated configuration:configuration];
 }
