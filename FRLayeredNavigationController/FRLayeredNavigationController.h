@@ -289,6 +289,11 @@ typedef enum {
 @property (nonatomic) BOOL userInteractionEnabled;
 
 /**
+ * If user interaction on the layered navigation controller is enabled.
+ */
+@property (nonatomic, readonly) UIGestureRecognizer* panGestureRecognizer;
+
+/**
  * Returns all the UIViewController objects being managed by the FRNavigationController.
  * Note that, unlike a UINavigationController, this is a readonly property.
  */

@@ -919,6 +919,11 @@ typedef enum {
     }
 }
 
+- (UIGestureRecognizer*)panGestureRecognizer
+{
+    return self.panGR;
+}
+
 - (NSArray *)viewControllers
 {
     NSMutableArray *result = [NSMutableArray arrayWithCapacity:[self.layeredViewControllers count]];
