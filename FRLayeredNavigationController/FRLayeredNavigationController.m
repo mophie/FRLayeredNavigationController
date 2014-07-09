@@ -49,9 +49,7 @@ typedef enum {
 } SnappingPointsMethod;
 
 @interface FRLayeredNavigationController ()
-{
-    BOOL _displayTopViewInFullScreen;
-}
+
 @property (nonatomic, readwrite, strong) UIPanGestureRecognizer *panGR;
 @property (nonatomic, readwrite, strong) NSMutableArray *layeredViewControllers;
 @property (nonatomic, readwrite, weak) UIViewController *outOfBoundsViewController;
@@ -523,7 +521,7 @@ typedef enum {
 
 - (void)doLayout
 {
-    if (_displayTopViewInFullScreen == YES) {
+    if (_displayTopViewIsFullScreen == YES) {
         // Relayout in full screen
         FRLayerController* layerController = [self.layeredViewControllers lastObject];
         layerController.view.frame = [self getScreenBoundsForCurrentOrientation];
@@ -968,7 +966,7 @@ typedef enum {
     FRLayerController* layerController = [self.layeredViewControllers lastObject];
     FRLayeredNavigationItem* navigationItem = layerController.layeredNavigationItem;
 
-    _displayTopViewInFullScreen = YES;
+    _displayTopViewIsFullScreen = YES;
     self.userInteractionEnabled = NO;
 
     void (^compact)(void) = ^{
@@ -1000,7 +998,7 @@ typedef enum {
     };
     
     void (^finish)(void) = ^{
-        _displayTopViewInFullScreen = NO;
+        _displayTopViewIsFullScreen = NO;
         self.userInteractionEnabled = YES;
         [self doLayout];
     };
@@ -1019,7 +1017,7 @@ typedef enum {
 - (void)toggleFullScreenTopViewController:(BOOL)animated
 {
     FRLayerController* layerController = [self.layeredViewControllers lastObject];
-    if (_displayTopViewInFullScreen == YES) {
+    if (_displayTopViewIsFullScreen == YES) {
         [self hideFullScreenTopViewController:NO];
     } else {
         [self showFullScreenTopViewController:NO];

@@ -284,6 +284,11 @@ typedef enum {
 - (void)toggleFullScreenTopViewController:(BOOL)animated;
 
 /**
+ * If layered navigation controller is in full screen viewing mode.
+ */
+@property (nonatomic) BOOL displayTopViewIsFullScreen;
+
+/**
  * If user interaction on the layered navigation controller is enabled.
  */
 @property (nonatomic) BOOL userInteractionEnabled;
