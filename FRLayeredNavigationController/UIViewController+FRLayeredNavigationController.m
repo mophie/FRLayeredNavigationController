@@ -35,6 +35,19 @@
 
 - (FRLayeredNavigationController *)layeredNavigationController
 {
+    id result = [self layeredNavigationControllerIfExists];
+    
+    if (result == nil) {
+        FRDLOG(@"WARNING: No instance of FRLayeredNavigationController in view controller hierachy!");
+        FRDLOG(@"HINT: If you used [UIWindow addSubview:], change it to [UIWindow setRootViewController:]");
+    }
+
+    return result;
+}
+
+
+- (FRLayeredNavigationController *)layeredNavigationControllerIfExists
+{
     UIViewController *here = self;
 
     while (here != nil) {
@@ -45,11 +58,9 @@
         here = here.parentViewController;
     }
 
-    FRDLOG(@"WARNING: No instance of FRLayeredNavigationController in view controller hierachy!");
-    FRDLOG(@"HINT: If you used [UIWindow addSubview:], change it to [UIWindow setRootViewController:]");
-
     return nil;
 }
+
 
 - (FRLayeredNavigationItem *)layeredNavigationItem
 {

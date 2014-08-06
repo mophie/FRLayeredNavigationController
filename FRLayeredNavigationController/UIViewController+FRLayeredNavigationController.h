@@ -41,6 +41,13 @@
  */
 @property (nonatomic, readonly, strong) FRLayeredNavigationController *layeredNavigationController;
 
+
+/**
+ * The nearest ancestor in the view controller hierarchy that is a FRLayeredNavigationController.
+ * There is no warning if ancestor is not found in the view controller hierarchy.
+ */
+@property (nonatomic, readonly, strong) FRLayeredNavigationController *layeredNavigationControllerIfExists;
+
 /**
  * The navigation item used to represent the view controller inside a FRLayeredNavigationController.
  *
