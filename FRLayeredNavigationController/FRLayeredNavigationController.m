@@ -796,7 +796,12 @@ typedef enum {
                                    parentNavItem.nextItemDistance :
                                    FRLayeredNavigationControllerStandardDistance);
     navItem.initialViewPosition = CGPointMake(initX, 0);
-    navItem.currentViewPosition = CGPointMake(anchorCurrentX + anchorWidth, 0);
+    if ([UIApplication sharedApplication].statusBarHidden == NO) {
+        // slightly offset seems to correct the proper spacing for the status bar
+        navItem.currentViewPosition = CGPointMake(anchorCurrentX + anchorWidth, 0.02f);
+    } else {
+        navItem.currentViewPosition = CGPointMake(anchorCurrentX + anchorWidth, 0);
+    }
     navItem.titleView = nil;
     navItem.title = nil;
     navItem.hasChrome = YES;
